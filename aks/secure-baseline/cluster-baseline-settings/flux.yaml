@@ -107,6 +107,7 @@ spec:
         - --sync-state=secret
         - --listen-metrics=:3031
         - --git-timeout=5m
+        - --registry-disable-scanning=true
 ---
 # This secret is ok to be initialized as empty as this will be used to store
 # sync annotations because sync state is secret implied by git-readonly
