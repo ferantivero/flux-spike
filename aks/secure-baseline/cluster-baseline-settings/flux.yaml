@@ -51,7 +51,7 @@ spec:
     metadata:
       annotations:
         prometheus.io/port: "3031"
-        test: "foobar"
+        test: "foobar42"
       labels:
         app.kubernetes.io/name: flux
     spec:
