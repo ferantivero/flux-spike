@@ -51,7 +51,6 @@ spec:
     metadata:
       annotations:
         prometheus.io/port: "3031"
-        test: "foobar42"
       labels:
         app.kubernetes.io/name: flux
     spec:
@@ -79,7 +78,7 @@ spec:
         volumeMounts:
         - name: git-key
           mountPath: /etc/fluxd/ssh
-          readOnly: false
+          readOnly: true
         resources:
           requests:
             cpu: 50m
@@ -109,8 +108,10 @@ spec:
         - --git-timeout=5m
         - --registry-disable-scanning=true
 ---
-# This secret is ok to be initialized as empty as this will be used to store
-# sync annotations because sync state is secret implied by git-readonly
+# This secret is ok to be initialized as empty since Flux annotates the
+# Kubernetes Secret object with flux.weave.works/sync-hwm: <commit-sha>
+# as a way to store the latest commit applied to the cluster and later on
+# compare with to confirm wether it is in sync or not.
 apiVersion: v1
 kind: Secret
 metadata:
