@@ -35,12 +35,15 @@
 name: Deploy AKS Secure Baseline cluster stamp and Flux
 
 on:
-  paths:
-    - cluster-stamp.json
-    - .github/workflows/aks-deploy.yml
   push:
+    paths:
+      - 'aks/secure-baseline/cluster-stamp.json'
+      - '.github/workflows/aks-deploy.yml'
     branches: [ master ]
   pull_request:
+    paths:
+      - 'aks/secure-baseline/cluster-stamp.json'
+      - '.github/workflows/aks-deploy.yml'
     branches: [ master ]
 
 env:
