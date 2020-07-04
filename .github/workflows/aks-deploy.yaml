@@ -106,5 +106,5 @@ jobs:
       if: github.event_name == 'push'
       with:
         manifests: |
-          aks/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
-          aks/cluster-baseline-settings/flux.yaml
+          aks/secure-baseline/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
+          aks/secure-baseline/cluster-baseline-settings/flux.yaml
