@@ -105,6 +105,7 @@ jobs:
       uses: Azure/k8s-deploy@v1
       if: github.event_name == 'push'
       with:
+        namespace: 'cluster-baseline-settings'
         manifests: |
           aks/secure-baseline/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
           aks/secure-baseline/cluster-baseline-settings/flux.yaml
