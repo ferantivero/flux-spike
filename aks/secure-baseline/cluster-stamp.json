@@ -944,7 +944,7 @@
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
               "policyDefinitionId": "/providers/Microsoft.Authorization/policySetDefinitions/42b8ef37-b724-4e24-bbc8-7a7708edfe00",
               "parameters": {
-                  "excludedNamespaces": "kube-system;gatekeeper-system;azure-arc;cluster-baseline-settings",
+                  "excludedNamespaces": ["kube-system","gatekeeper-system","azure-arc","cluster-baseline-settings"],
                   "effect": "audit"
               }
             }
