@@ -20,10 +20,23 @@
                 "description": "This is tennant where the ServerAppId, ServerAppSecret, ClientAppId all reside"
             }
         },
-        "appGatewayListernerCertificate": {
+        "appGatewayListenerCertificate": {
             "type": "string",
             "metadata": {
                 "description": "The certificate data for app gateway TLS termination. It is base64"
+            }
+        },
+        "aksIngressControllerCertificate": {
+            "type": "string",
+            "metadata": {
+                "description": "The base 64 encoded AKS Ingress Controller public certificate (as .crt or .cer) to be stored in Azure Key Vault as secret and referenced by Azure Application Gateway as a trusted root certificate."
+            }
+        },
+        "clusterAuthorizedIPRanges": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "IP ranges authorized to contact the Kubernetes API server. Passing an empty array will result in no IP restrictions. If any are provided, remember to also provide the public IP of the egress Azure Firewall otherwise your nodes will not be able to talk to the API server (e.g. Flux)."
             }
         },
         "location": {
@@ -71,7 +84,7 @@
             }
         },
         "kubernetesVersion": {
-            "defaultValue": "1.17.5",
+            "defaultValue": "1.17.7",
             "type": "string"
         }
     },
@@ -207,7 +220,19 @@
                 "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName') )]"
             ],
             "properties": {
-                "value": "[parameters('appGatewayListernerCertificate')]",
+                "value": "[parameters('appGatewayListenerCertificate')]",
+                "recoveryLevel": "Purgeable"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2019-09-01",
+            "name": "[concat( variables('keyVaultName') , '/appgw-ingress-internal-aks-ingress-contoso-com-tls')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('aksIngressControllerCertificate')]",
                 "recoveryLevel": "Purgeable"
             }
         },
@@ -287,6 +312,14 @@
                     ],
                     "minProtocolVersion": "TLSv1_2"
                 },
+                "trustedRootCertificates": [
+                    {
+                        "name": "root-cert-wildcard-aks-ingress-contoso",
+                        "properties": {
+                            "keyVaultSecretId": "[concat(reference(variables('keyVaultName')).vaultUri,'secrets/appgw-ingress-internal-aks-ingress-contoso-com-tls')]"
+                        }
+                    }
+                ],
                 "gatewayIPConfigurations": [
                     {
                         "name": "apw-ip-configuration",
@@ -823,6 +856,7 @@
                     "max-graceful-termination-sec": "600"
                 },
                 "apiServerAccessProfile": {
+                    "authorizedIPRanges": "[parameters('clusterAuthorizedIPRanges')]",
                     "enablePrivateCluster": false
                 }
             },
@@ -1034,13 +1068,14 @@
                   "value": "1000"
                 },
                 "memoryLimit": {
-                  "value": "500"
+                  "value": "512"
                 },
                 "excludedNamespaces": {
                   "value": [
                     "kube-system",
                     "gatekeeper-system",
-                    "azure-arc,cluster-baseline-settings"
+                    "azure-arc",
+                    "cluster-baseline-settings"
                   ]
                 },
                 "effect": {
@@ -1058,7 +1093,7 @@
               "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/febd0533-8e55-448f-b837-bd0e06f16469",
               "parameters": {
                 "allowedContainerImagesRegex": {
-                  "value": "[concat(variables('defaultAcrName'),'.azurecr.io/.+$')]"
+                  "value": "[concat(variables('defaultAcrName'),'.azurecr.io/.+$|mcr.microsoft.com/.+$|registry.hub.docker.com/library/.+$')]"
                 },
                 "excludedNamespaces": {
                   "value": [
