@@ -997,7 +997,7 @@
         },
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat( 'pa-enforce-https-ingress', variables('clusterName'))]",
+            "name": "[concat( 'pa-enforce-https-ingress-', variables('clusterName'))]",
             "apiVersion": "2019-09-01",
             "properties": {
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
@@ -1019,7 +1019,7 @@
         },
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat( 'pa-enforce-internal-load-balancers', variables('clusterName'))]",
+            "name": "[concat( 'pa-enforce-internal-load-balancers-', variables('clusterName'))]",
             "apiVersion": "2019-09-01",
             "properties": {
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
@@ -1041,7 +1041,7 @@
         },
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat( 'pa-readonly-root-fs', variables('clusterName'))]",
+            "name": "[concat( 'pa-readonly-root-fs-', variables('clusterName'))]",
             "apiVersion": "2019-09-01",
             "properties": {
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
@@ -1063,7 +1063,7 @@
         },
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat( 'pa-enforce-resources-wo-exceeding', variables('clusterName'))]",
+            "name": "[concat( 'pa-enforce-resources-wo-exceeding-', variables('clusterName'))]",
             "apiVersion": "2019-09-01",
             "properties": {
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
@@ -1091,7 +1091,7 @@
         },
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat( 'pa-whitelist-registries-images', variables('clusterName'))]",
+            "name": "[concat( 'pa-whitelist-registries-images-', variables('clusterName'))]",
             "apiVersion": "2019-09-01",
             "properties": {
               "scope": "[subscriptionResourceId('Microsoft.Resources/resourceGroups', resourceGroup().name)]",
