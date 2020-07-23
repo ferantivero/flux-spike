@@ -21,15 +21,6 @@ spec:
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzurePodIdentityException
 metadata:
-  name: aks-azure-policy-exception
-  namespace: kube-system
-spec:
-  podLabels:
-    app: azure-policy
----
-apiVersion: "aadpodidentity.k8s.io/v1"
-kind: AzurePodIdentityException
-metadata:
   name: oms-agent-exception
   namespace: kube-system
 spec:
